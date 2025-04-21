@@ -11,7 +11,7 @@ def main(page: ft.Page):
     name_input = ft.TextField(label="описание расхода")
     amount_input = ft.TextField(label="сумма", keyboard_type="number")
 
-    expenses_list = ft.Column()
+    expenses_list = ft.Column(scroll="always", expand=True)
 
     total_text = ft.Text("0", size=20, weight="bold", color=ft.colors.BLACK)
 
@@ -43,7 +43,17 @@ def main(page: ft.Page):
         expenses_list.controls.append(
             ft.Row([
                 ft.Text(name, color=ft.colors.BLACK),
-                ft.Text(f"{amount:.2f}", color=color)
+                ft.Text(f"{amount:.2f}", color=color),
+                ft.IconButton(
+                    icon=ft.icons.EDIT_OUTLINED,
+                    icon_color=ft.colors.BLUE,
+                    icon_size=20,
+                ),
+                ft.IconButton(
+                    icon=ft.icons.DELETE_OUTLINED,
+                    icon_color=ft.colors.RED,
+                    icon_size=20,
+                ),
             ])
         )
 
@@ -62,14 +72,14 @@ def main(page: ft.Page):
         color=ft.colors.WHITE
     )
 
+    input_row = ft.Row(controls=[name_input, amount_input, button])
+
     page.add(
-        name_input,
-        amount_input,
-        button,
-        ft.Text("список расходов:", size=18, weight="bold", color=ft.colors.BLACK),
-        expenses_list,
-        ft.Text("общая сумма:", size=18, weight="bold", color=ft.colors.BLACK),
-        total_text
+        ft.Text("Ваши расходы", size=30, weight=ft.FontWeight.BOLD, color=ft.colors.BLACK),
+        input_row,
+        ft.Text("Общая сумма расходов:", size=18, weight="bold", color=ft.colors.BLACK),
+        total_text,
+        expenses_list
     )
 
 ft.app(target=main)
