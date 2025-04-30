@@ -10,21 +10,26 @@ class Database:
     def create_table(self):
         with sqlite3.connect(self.path) as conn:
             cursor = conn.cursor()
-            cursor.execute("""
+            cursor.execute(
+                """
                 CREATE TABLE IF NOT EXISTS expenses (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT,
                     amount REAL
                 )
-            """)
+                """
+            )
             conn.commit()
 
     def add_expense(self, name: str, amount: float):
         with sqlite3.connect(self.path) as conn:
             cursor = conn.cursor()
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT INTO expenses (name, amount) VALUES (?, ?)
-            """, (name, amount))
+                """,
+                (name, amount),
+            )
             conn.commit()
 
     def get_all_expenses(self):
@@ -39,3 +44,9 @@ class Database:
             cursor.execute("SELECT SUM(amount) FROM expenses")
             result = cursor.fetchone()
             return result[0] if result[0] is not None else 0
+
+    def delete_expense(self, name: str):
+        with sqlite3.connect(self.path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM expenses WHERE name=?", (name,))
+            conn.commit()
